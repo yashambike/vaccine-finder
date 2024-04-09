@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/yasha/Downloads/archive/Vaccine_Availability.db" readonly="0" foreign_keys="" case_sensitive_like="" temp_store="" wal_autocheckpoint="" synchronous=""/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="150"/><column_width id="3" width="4367"/><column_width id="4" width="0"/></tab_structure><tab_browse><current_table name="0,0:"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">CREATE TABLE &quot;patient&quot; (
+	&quot;Patient_Id&quot;	INTEGER NOT NULL,
+	&quot;First_Name&quot;	Varchar(20),
+	&quot;Last_Name&quot;	Varchar(20),
+	&quot;Email&quot;	Varchar(30),
+	&quot;Phone_Number&quot;	Varchar(20),
+	&quot;DOB&quot;	DATE,
+	PRIMARY KEY(&quot;Patient_id&quot; AUTOINCREMENT)
+);
+
+CREATE TABLE &quot;vaccine&quot; (
+	&quot;Vaccine_Id&quot;	INTEGER NOT NULL,
+	&quot;Vaccine_Name&quot;	Varchar(20),
+	PRIMARY KEY(&quot;Vaccine_Id&quot; AUTOINCREMENT)
+);
+
+CREATE TABLE &quot;vaccination_center&quot; (
+	&quot;Vaccination_Center_Id&quot;	INTEGER NOT NULL,
+	&quot;Name&quot;	BLOB,
+	&quot;Address&quot;	Varchar(100),
+	&quot;Zipcode&quot;	Varchar(10),
+	&quot;Dose_Limit&quot;	INTEGER,
+	&quot;Total_Limit&quot;	INTEGER(3),
+	PRIMARY KEY(&quot;Vaccination_Center_Id&quot; AUTOINCREMENT)
+);
+
+CREATE TABLE &quot;patient_vaccine&quot; (
+	&quot;Id&quot;	INTEGER NOT NULL,
+	&quot;FK_Patient_Id&quot;	INTEGER NOT NULL,
+	&quot;FK_Vaccine_Id&quot;	INTEGER NOT NULL,
+	&quot;FK_Vaccination_Center_Id&quot;	INTEGER NOT NULL,
+	&quot;Vaccine_Date&quot;	DATETIME,
+	&quot;Dose_No&quot;	INTEGER,
+	PRIMARY KEY(&quot;id&quot; AUTOINCREMENT),
+	FOREIGN KEY(&quot;FK_Patient_Id&quot;) REFERENCES &quot;patient&quot;(&quot;Patient_Id&quot;),
+	FOREIGN KEY(&quot;FK_Vaccine_Id&quot;) REFERENCES &quot;vaccine&quot;(&quot;Vaccine_Id&quot;),
+	FOREIGN KEY(&quot;FK_Vaccination_Center_Id&quot;) REFERENCES &quot;vaccination_center&quot;(&quot;Vaccination_Center_Id&quot;)
+);
+
+CREATE TABLE &quot;vaccination_schedule&quot; (
+	&quot;Id&quot;	INTEGER NOT NULL,
+	&quot;FK_Patient_Id&quot;	INTEGER NOT NULL,
+	&quot;FK_Vaccine_Id&quot;	INTEGER NOT NULL,
+	&quot;FK_Vaccination_Center_Id&quot;	INTEGER NOT NULL,
+	&quot;Expected_Vaccination_Date&quot;	DATETIME,
+	&quot;Actual_Vaccination_Date&quot;	DATETIME,
+	&quot;Dose_No&quot;	INTEGER,
+	PRIMARY KEY(&quot;id&quot; AUTOINCREMENT),
+	FOREIGN KEY(&quot;FK_Vaccination_Center_Id&quot;) REFERENCES &quot;vaccination_center&quot;(&quot;Vaccination_Center_Id&quot;),
+	FOREIGN KEY(&quot;FK_Pateint_Id&quot;) REFERENCES &quot;patient&quot;(&quot;Patient_Id&quot;),
+	FOREIGN KEY(&quot;FK_Vaccine_Id&quot;) REFERENCES &quot;vaccine&quot;(&quot;Vaccine_Id&quot;)
+);
+
+CREATE TABLE &quot;vaccine_availability&quot; (
+	&quot;Id&quot;	INTEGER NOT NULL,
+	&quot;FK_Vaccine_Id&quot;	INTEGER NOT NULL,
+	&quot;Available_Stock_Limit&quot;	INTEGER,
+	PRIMARY KEY(&quot;Id&quot; AUTOINCREMENT),
+	FOREIGN KEY(&quot;FK_Vaccine_Id&quot;) REFERENCES &quot;vaccine&quot;(&quot;Vaccine_Id&quot;)
+);
+
+CREATE TABLE &quot;age_group&quot; (
+	&quot;Age_Group_Id&quot;	INTEGER NOT NULL,
+	&quot;Age_Group_Type&quot;	Varchar(20),
+	PRIMARY KEY(&quot;Age_Group_Id&quot; AUTOINCREMENT)
+);
+
+CREATE TABLE &quot;age_group_patient&quot; (
+	&quot;Id&quot;	INTEGER NOT NULL,
+	&quot;FK_Age_Group_Id&quot;	INTEGER NOT NULL,
+	&quot;FK_Patient_Id&quot;	INTEGER NOT NULL,
+	PRIMARY KEY(&quot;Id&quot; AUTOINCREMENT),
+	FOREIGN KEY(&quot;FK_Patient_Id&quot;) REFERENCES &quot;patient&quot;(&quot;Patient_Id&quot;),
+	FOREIGN KEY(&quot;FK_Age_Group_Id&quot;) REFERENCES &quot;age_group&quot;(&quot;Age_Group_Id&quot;)
+);</sql><sql name="SQL 2">
+Insert into patient(Patient_id,First_Name,Last_Name,Email,Phone_Number,DOB)Values
+(1,&quot;James&quot;,&quot;Butt&quot;,&quot;jbutt@gmail.com&quot;,&quot;5046218927&quot;,&quot;09-23-1993&quot;),
+(2,&quot;Josephine&quot;,&quot;Darakjy&quot;,&quot;josephine_darakjy@darakjy.org&quot;,&quot;8102929388&quot;,&quot;08-06-1995&quot;),
+(3,&quot;Art&quot;,&quot;Venere&quot;,&quot;art@venere.org&quot;,&quot;856-636-8749&quot;,&quot;01-06-1965&quot;),
+(4,&quot;Lenna&quot;,&quot;Paprocki&quot;,&quot;lpaprocki@hotmail.com&quot;,&quot;907-385-4412&quot;,&quot;06-28-1985&quot;),
+(5,&quot;Donette&quot;,&quot;Foller&quot;,&quot;donette.foller@cox.net&quot;,&quot;513-570-1893&quot;,&quot;05-12-2000&quot;),
+(6,&quot;Simona&quot;,&quot;Morasca&quot;,&quot;simona@morasca.com&quot;,&quot;419-503-2484&quot;,&quot;11-06-1998&quot;),
+(7,&quot;Mitsue&quot;,&quot;Tollner&quot;,&quot;mitsue_tollner@yahoo.com&quot;,&quot;773-573-6914&quot;,&quot;05-03-1987&quot;),
+(8,&quot;Leota&quot;,&quot;Dilliard&quot;,&quot;leota@hotmail.com&quot;,&quot;408-752-3500&quot;,&quot;02-10-1996&quot;),
+(9,&quot;Sage&quot;,&quot;Wieser&quot;,&quot;sage_wieser@cox.net&quot;,&quot;605-414-2147&quot;,&quot;10-29-1995&quot;),
+(10,&quot;Kris&quot;,&quot;Marrier&quot;,&quot;kris@gmail.com&quot;,&quot;410-655-8723&quot;,&quot;12-31-1975&quot;)
+
+
+Insert into vaccine(Vaccine_Id,Vaccine_Name)Values
+(1,&quot;Moderna&quot;),
+(2,&quot;Covishield&quot;),
+(3,&quot;Covaxin&quot;),
+(4,&quot;Pfizer&quot;),
+(5,&quot;Johnson&amp;Johnson&quot;)
+
+Insert into vaccination_center(Vaccination_Center_Id,Name,Address,Zipcode,Dose_Limit,Total_Limit)Values
+(1,&quot;CVS Pharmacy&quot;,&quot;231 Massachusetts Ave&quot;,&quot;02115&quot;,0,700),
+(2,&quot;Walgreens Pharmacy&quot;,&quot;841 Boylston Street &quot;,&quot;02116&quot;,0,500),
+(3,&quot;Whitter Street Health Center&quot;,&quot;1290 Tremont Street, Roxbury&quot;,&quot;02120&quot;,0,450),
+(4,&quot;Fenway Health&quot;,&quot;1340 Boylston Street&quot;,&quot;02215&quot;,0,300),
+(5,&quot;Boston Medical Center Health&quot;,&quot;85 E Concord St, Boston&quot;,&quot;02118&quot;,0,480),
+(6,&quot;Gary Drug Co&quot;,&quot;59 Charles St, Boston&quot;,&quot;02114&quot;,0,840)
+
+Insert into vaccine_availability(Id,FK_Vaccine_Id,Available_Stock_Limit)Values
+(1,1,1000),
+(2,2,1500),
+(3,3,600),
+(4,4,780),
+(5,5,850)
+
+Insert into patient_vaccine(id,FK_Patient_Id,FK_Vaccine_Id,FK_Vaccination_Center_Id,Vaccine_Date,Dose_No)Values
+(1,1,2,1,&quot;08-20-2022&quot;,1),
+(2,2,1,2,&quot;05-05-2022&quot;,2),
+(3,6,5,6,&quot;01-15-2022&quot;,2),
+(4,3,4,2,&quot;03-08-2022&quot;,1),
+(5,10,5,3,&quot;07-19-2022&quot;,1),
+(6,5,3,5,&quot;09-06-2022&quot;,2),
+(7,4,3,4,&quot;05-10-2022&quot;,2),
+(8,7,1,3,&quot;12-30-2021&quot;,1),
+(9,8,5,2,&quot;02-24-2022&quot;,2),
+(10,9,2,1,&quot;10-20-2022&quot;,2),
+(11,1,2,1,&quot;10-20-2022&quot;,2),
+(12,10,5,5,&quot;11-19-2022&quot;,2),
+(13,7,1,3,&quot;03-30-2022&quot;,2),
+(14,3,4,2,&quot;06-08-2022&quot;,2)
+
+
+Insert into vaccination_schedule(id,FK_Patient_Id,FK_Vaccine_Id,FK_Vaccination_Center_Id,Expected_Vaccination_Date,Actual_Vaccination_Date,Dose_No)Values
+(1,1,2,1,&quot;08-20-2022&quot;,&quot;08-20-2022&quot;,1),
+(2,2,1,2,&quot;05-04-2022&quot;,&quot;05-05-2022&quot;,2),
+(3,6,5,6,&quot;01-01-2022&quot;,&quot;01-15-2022&quot;,2),
+(4,3,4,2,&quot;02-24-2022&quot;,&quot;03-08-2022&quot;,1),
+(5,10,5,3,&quot;06-27-2022&quot;,&quot;07-19-2022&quot;,1),
+(6,5,3,5,&quot;07-06-2022&quot;,&quot;09-06-2022&quot;,2),
+(7,4,3,4,&quot;05-01-2022&quot;,&quot;05-10-2022&quot;,2),
+(8,7,1,3,&quot;12-10-2021&quot;,&quot;12-30-2021&quot;,1),
+(9,8,5,2,&quot;02-14-2022&quot;,&quot;02-24-2022&quot;,2),
+(10,9,2,1,&quot;10-20-2022&quot;,&quot;10-20-2022&quot;,2),
+(11,1,2,1,&quot;10-07-2022&quot;,&quot;10-20-2022&quot;,2),
+(12,10,5,5,&quot;19-10-2022&quot;,&quot;11-19-2022&quot;,2),
+(13,7,1,3,&quot;03-25-2022&quot;,&quot;03-30-2022&quot;,2),
+(14,3,4,2,&quot;05-21-2022&quot;,&quot;06-08-2022&quot;,2)</sql><sql name="SQL 3">---- How many patients have excatly 1 dose
+Select p.First_Name, p.Last_Name,p.DOB, pv.Dose_No  
+from patient p
+INNER join patient_vaccine pv on p.Patient_id = pv.FK_Patient_Id
+where pv.Dose_No = 1
+
+-----how many patients had same expected date and actual date for vaccination with centre name, Address and zipcode
+select DISTINCT p.First_Name, p.Last_Name, vs.Expected_Vaccination_Date, vs.Actual_Vaccination_Date, vc.name, vc.Address, vc.Zipcode, pv.Vaccine_Date, pv.Dose_No
+from patient p
+INNER join vaccination_schedule vs on p.Patient_id = vs.FK_Patient_Id
+INNER join vaccination_center vc on vc.Vaccination_Center_Id = vs.FK_Vaccination_Center_Id
+INNER join patient_vaccine pv on p.Patient_id = pv.FK_Patient_Id
+
+----How many have 1st and 2nd doses
+select pv.Dose_No ,count(*) 'Total count of Vaccines'
+from  patient p
+inner join patient_vaccine pv on p.Patient_id = pv.FK_Patient_id 
+group by pv.Dose_No
+order by  pv.Dose_No
+
+---What is the stock limit of vaccines
+select v.Vaccine_Name,va.Available_Stock_Limit
+from vaccine v
+inner join vaccine_availability va on v.Vaccine_Id = va.FK_Vaccine_Id
+
+--What is minimum and maximum Total_Limit in vaccination_center
+
+SELECT *,MIN(Total_Limit)
+FROM Vaccination_Center
+
+SELECT *,Max(Total_Limit)
+FROM Vaccination_Center
+
+--How many patients booked appointment and what are the count of doses
+Select p.First_Name, p.Last_Name, v.Name, pv.Dose_No ,pv.Vaccine_Date
+from patient p
+INNER join patient_vaccine pv on p.Patient_id = pv.FK_Patient_Id
+INNER join vaccine v on v.Vaccine_Id = pv.FK_Vaccine_Id
+INNER join vaccination_center vc on vc.Vaccination_Center_Id = pv.FK_Vaccination_Center_Id</sql><current_tab id="2"/></tab_sql></sqlb_project>
